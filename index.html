@@ -1,0 +1,140 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <title>Stopwatch</title>
+  <style>
+  body {
+  background-color: black;
+  }
+
+
+  .stopwatchButton,
+  .reset {
+  display: inline;
+  color: white;
+  background-color: blue;
+  font-size: 25px;
+  padding: 15px 60px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+
+  }
+  .all {
+  display: inline-block;
+  background-color: black;
+  position: relative;
+  left: 100px;
+  top: 100px;
+  padding: 20px 20px 20px 20px;
+  border: 1px solid lightblue;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);}
+
+  .time {
+  margin-left: 10px;
+  }
+
+  .hours,
+  .minutes,
+  .seconds {
+  color: slategrey;
+  display: inline;
+  align-items: center;
+  font-size: 100px;
+  align-items: center;
+
+  }
+  </style>
+  </head>
+  <body>
+  <div class="all">
+  <button class="js-stopwatchButton stopwatchButton">Start</button>
+  <button class="js-reset reset">Reset</button>
+
+  <div class="time">
+  <div class="js-hours hours"></div>
+  <div class="js-minutes minutes"></div>
+  <div class="js-seconds seconds"></div>
+  </div>
+
+  </div>
+  <script>
+  document.querySelector('.js-stopwatchButton').addEventListener('click', () => {
+  time();
+  });
+
+  document.body.addEventListener('keydown', (event) => {
+  if (event.key === 's') {
+  time();
+
+  }
+  })
+  let intervalId;
+  let isStopwatchOn = false;
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+
+  document.querySelector('.js-reset').addEventListener('click', () => {
+  document.querySelector('.js-stopwatchButton').innerHTML = 'Start';
+  clearInterval(intervalId);
+  isStopwatchOn = false;
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+  updateDisplay();
+  });
+
+  document.body.addEventListener('keydown', (event) => {
+  if (event.key === 'r') {
+  document.querySelector('.js-stopwatchButton').innerHTML = 'Start';
+  clearInterval(intervalId);
+  isStopwatchOn = false;
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+  updateDisplay();
+  }
+  });
+
+  function time() {
+  if (!isStopwatchOn) {
+  document.querySelector('.js-stopwatchButton').innerHTML = 'Stop';
+  intervalId = setInterval(incrementTime, 1000);
+  isStopwatchOn = true;
+  } else {
+  document.querySelector('.js-stopwatchButton').innerHTML = 'Start';
+  clearInterval(intervalId);
+  isStopwatchOn = false;
+  }
+  }
+
+  function incrementTime() {
+  seconds++;
+  if (seconds === 60) {
+  seconds = 0;
+  minutes++;
+  if (minutes === 60) {
+  minutes = 0;
+  hours++;
+  }
+  }
+  updateDisplay();
+  }
+
+  function updateDisplay() {
+  const secondsDisplay = document.querySelector('.js-seconds');
+  const minutesDisplay = document.querySelector('.js-minutes');
+  const hoursDisplay = document.querySelector('.js-hours');
+
+  secondsDisplay.textContent = padZero(seconds) + '';
+  minutesDisplay.textContent = padZero(minutes) + ':';
+  hoursDisplay.textContent = padZero(hours) + ':';
+  }
+
+  function padZero(number) {
+  return number.toString().padStart(2, '0');
+  }
+  </script>
+  </body>
+  </html>
